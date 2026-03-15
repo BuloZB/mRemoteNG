@@ -32,6 +32,13 @@ namespace mRemoteNG.App
         [STAThread]
         public static void Main(string[] args)
         {
+            // Must be called before any other WinForms / Application.* usage so that
+            // per-monitor font scaling and hit-testing are initialised correctly from
+            // the very first UI operation (dialogs shown in MainAsync, exception
+            // handlers, EnableVisualStyles, …).  The app manifest already declares
+            // PerMonitorV2 awareness; this call keeps the WinForms runtime in sync.
+            Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
+
             // Ensure the real entry point is definitely STA
             MainAsync(args).GetAwaiter().GetResult();
         }
@@ -50,6 +57,7 @@ namespace mRemoteNG.App
 
             // Checking .NET Runtime version
             var (latestRuntimeVersion, downloadUrl) = DotNetRuntimeCheck.GetLatestAvailableDotNetVersionAsync().GetAwaiter().GetResult();
+            bool validDownloadUrl = Uri.TryCreate(downloadUrl, UriKind.Absolute, out var downloadUri) && downloadUri.Scheme == Uri.UriSchemeHttps;
             if (string.IsNullOrEmpty(installedVersion))
             {
                 try
@@ -58,19 +66,26 @@ namespace mRemoteNG.App
                         $".NET " + DotNetRuntimeCheck.RequiredDotnetVersion + ".0 " + Language.MsgRuntimeIsRequired + "\n\n" +
                         Language.MsgDownloadLatestRuntime + "\n" + downloadUrl + "\n\n" +
                         Language.MsgExit + "\n\n",
-                        Language.MsgMissingRuntime + " .NET " + DotNetRuntimeCheck.RequiredDotnetVersion);
+                        Language.MsgMissingRuntime + " .NET " + DotNetRuntimeCheck.RequiredDotnetVersion,
+                        validDownloadUrl);
 
                     if (result == DialogResult.OK && InternetConnection.IsPosible())
                     {
-                        try
+                        if (validDownloadUrl)
                         {
-                            if (!string.IsNullOrEmpty(downloadUrl) &&
-                                downloadUrl.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                            try
+                            {
                                 Process.Start(new ProcessStartInfo(fileName: downloadUrl) { UseShellExecute = true });
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Unable to open download link: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            MessageBox.Show($"Unable to open download link: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("The download link is unavailable. Please visit https://dotnet.microsoft.com/download to download the required runtime manually.",
+                                "Download Unavailable", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                 }
@@ -274,7 +289,8 @@ namespace mRemoteNG.App
 
         // Helper to show a dialog with "Download" and "Cancel" buttons.
         // Returns DialogResult.OK if Download clicked, otherwise DialogResult.Cancel.
-        private static DialogResult ShowDownloadCancelDialog(string message, string caption)
+        // When hasValidUrl is false, the Download button is disabled.
+        private static DialogResult ShowDownloadCancelDialog(string message, string caption, bool hasValidUrl = true)
         {
             using Form dialog = new Form()
             {
@@ -325,6 +341,8 @@ namespace mRemoteNG.App
                 string? linkUrl = e.Link.LinkData as string;
                 if (string.IsNullOrEmpty(linkUrl))
                     return;
+                if (!hasValidUrl)
+                    return;
                 if (!InternetConnection.IsPosible())
                 {
                     MessageBox.Show("No internet connection is available.", "Network", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -342,6 +360,7 @@ namespace mRemoteNG.App
                 Text = "Download",
                 DialogResult = DialogResult.OK,
                 Size = new Size(100, 28),
+                Enabled = hasValidUrl,
             };
             Button btnCancel = new Button()
             {
