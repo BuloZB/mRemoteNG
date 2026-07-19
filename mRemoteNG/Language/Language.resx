@@ -1119,6 +1119,9 @@ If you run into such an error, please create a new connection file!</value>
   <data name="PropertyDescriptionUseRCG" xml:space="preserve">
     <value>Use Remote Credential Guard to tunnel authentication on target back to source through the RDP channel.</value>
   </data>
+  <data name="PropertyDescriptionUseRedirectionServerName" xml:space="preserve">
+    <value>Use the redirection server name instead of the connection hostname for RDP connections.</value>
+  </data>
   <data name="PropertyDescriptionClearCachedRdpCredentials" xml:space="preserve">
     <value>If an RDP connection fails with an authentication error, Windows may be substituting a stale cached credential for the credentials configured on this connection. Use this action to delete the TERMSRV/&lt;hostname&gt; entry from the Windows Credential Manager so the credentials on this connection are sent unchanged on the next attempt.</value>
   </data>
@@ -1301,6 +1304,7 @@ If you run into such an error, please create a new connection file!</value>
   </data>
   <data name="UseRedirectionServerName" xml:space="preserve">
     <value>Use Redirection Server Name</value>
+  </data>
   <data name="ClearCachedRdpCredentials" xml:space="preserve">
     <value>Clear Cached RDP Credentials</value>
   </data>
@@ -1332,8 +1336,7 @@ If you run into such an error, please create a new connection file!</value>
     <value>Protocol Event Disconnected. Host: "{1}"; Protocol: "{2}" Message: "{0}"</value>
   </data>
   <data name="ProtocolEventDisconnectFailed" xml:space="preserve">
-    <value>Protocol Event Disconnected failed.
-{0}</value>
+    <value>Protocol Event Disconnected failed.{0}</value>
   </data>
   <data name="ProtocolToImport" xml:space="preserve">
     <value>Protocol to import</value>
@@ -2349,7 +2352,7 @@ Nightly Channel includes Alphas, Betas &amp; Release Candidates.</value>
   <data name="lblConnectionsBackupMaxCount" xml:space="preserve">
     <value>Maximum number of backups</value>
   </data>
-  <data name="PageСontrolInOptionsMenu" xml:space="preserve">
+  <data name="PageControlInOptionsMenu" xml:space="preserve">
     <value>Page control in Options menu</value>
   </data>
   <data name="ShowForUser" xml:space="preserve">
@@ -2752,5 +2755,74 @@ Nightly Channel includes Alphas, Betas &amp; Release Candidates.</value>
   </data>
   <data name="DisplayReconnectionDialog" xml:space="preserve">
     <value>Display reconnection dialog when disconnected from server (RDP &amp;&amp; ICA only)</value>
+  </data>
+  <data name="OptionsManagement" xml:space="preserve">
+    <value>Options Management (Dev)</value>
+  </data>
+  <data name="ManageOptions" xml:space="preserve">
+    <value>Manage Options</value>
+  </data>
+  <data name="OptionKey" xml:space="preserve">
+    <value>Key:</value>
+  </data>
+  <data name="OptionValue" xml:space="preserve">
+    <value>Value:</value>
+  </data>
+  <data name="OptionCategory" xml:space="preserve">
+    <value>Category:</value>
+  </data>
+  <data name="OptionDescription" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="OptionType" xml:space="preserve">
+    <value>Type:</value>
+  </data>
+  <data name="ButtonAdd" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="ButtonEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="ButtonDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ButtonRefresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="OptionAddedSuccessfully" xml:space="preserve">
+    <value>Option added successfully.</value>
+  </data>
+  <data name="OptionUpdatedSuccessfully" xml:space="preserve">
+    <value>Option updated successfully.</value>
+  </data>
+  <data name="OptionDeletedSuccessfully" xml:space="preserve">
+    <value>Option deleted successfully.</value>
+  </data>
+  <data name="ConfirmDeleteOption" xml:space="preserve">
+    <value>Are you sure you want to delete the option '{0}'?</value>
+  </data>
+  <data name="ErrorLoadingOptions" xml:space="preserve">
+    <value>Error loading options: {0}</value>
+  </data>
+  <data name="ErrorAddingOption" xml:space="preserve">
+    <value>Error adding option: {0}</value>
+  </data>
+  <data name="ErrorUpdatingOption" xml:space="preserve">
+    <value>Error updating option: {0}</value>
+  </data>
+  <data name="ErrorDeletingOption" xml:space="preserve">
+    <value>Error deleting option: {0}</value>
+  </data>
+  <data name="OptionKeyRequired" xml:space="preserve">
+    <value>Key is required.</value>
+  </data>
+  <data name="SelectOptionToEdit" xml:space="preserve">
+    <value>Please select an option to edit.</value>
+  </data>
+  <data name="SelectOptionToDelete" xml:space="preserve">
+    <value>Please select an option to delete.</value>
+  </data>
+  <data name="OptionNotFound" xml:space="preserve">
+    <value>Option not found.</value>
   </data>
 </root>
